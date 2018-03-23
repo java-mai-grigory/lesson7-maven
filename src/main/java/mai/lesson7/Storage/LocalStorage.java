@@ -83,4 +83,35 @@ public class LocalStorage extends Storage {
 			}
 		}
 	}
+
+	public void serialize() throws FileNotFoundException, IOException {
+		{
+			String file = Settings.getInstance().value("savfile");
+			try(ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream(file)) )
+			{
+				ArrayList<SavableStudent> dat = this.getData();
+			    oos.writeObject(dat);
+			} catch (FileNotFoundException e) {
+				throw e;
+			} catch (IOException e) {
+				throw e;
+			}
+		}
+	}
+
+    public void deserialize() throws FileNotFoundException, IOException, ClassNotFoundException {
+        {
+            String file = Settings.getInstance().value("savfile");
+            try(ObjectInputStream ios = new ObjectInputStream( new FileInputStream(file)) )
+            {
+            	ArrayList<SavableStudent> data = this.getData();
+            	ArrayList<SavableStudent> loaded = (ArrayList<SavableStudent>) ios.readObject();
+            	data.addAll(loaded);
+               } catch (FileNotFoundException e) {
+                throw e;
+            } catch (IOException e) {
+                throw e;
+            }
+        }
+    }
 }

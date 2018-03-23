@@ -31,8 +31,8 @@ public class Program extends JFrame implements TableModelListener{
 	private JMenuBar menubar = new JMenuBar();
 	private JButton buttonOpen = new JButton("Открыть");
 	private JButton buttonSave = new JButton("Сохранить");
-    private JButton buttonSerialize = new JButton("Восстановить");
-    private JButton buttonDeserialize = new JButton("Сериализовать");
+    private JButton buttonSerialize = new JButton("Сериализовать");
+    private JButton buttonDeserialize = new JButton("Восстановить");
 	private JButton buttonAdd = new JButton("Добавить");
 	private JButton buttonRemove = new JButton("Удалить");
 	
@@ -120,7 +120,40 @@ public class Program extends JFrame implements TableModelListener{
                 JOptionPane.showMessageDialog(null, "Произошла ошибка чтения файла");
             }
         });
-	
+
+
+        buttonSerialize.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				LocalStorage storage = new LocalStorage(model.getData());
+				try {
+					storage.serialize();
+				} catch (FileNotFoundException ex) {
+					JOptionPane.showMessageDialog(null, "Файл не найден");
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null, "Произошла ошибка чтения файла");
+				}
+			}
+		});
+
+                
+		buttonDeserialize.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LocalStorage storage = new LocalStorage(model.getData());
+                try {
+                    storage.deserialize();
+                    table.updateUI();
+                } catch (FileNotFoundException ex) {
+                    JOptionPane.showMessageDialog(null, "Файл не найден");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Произошла ошибка чтения файла");
+                } catch (ClassNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
 		render(table.getColumnModel().getColumn(3), data);
 		render(table.getColumnModel().getColumn(4), data);
 		render(table.getColumnModel().getColumn(5), data);
@@ -134,7 +167,7 @@ public class Program extends JFrame implements TableModelListener{
 	private void  loadTestData()
 	{
 		data.clear();
-	/*	data.add(new SavableStudent("Иван", "Иванов", 5, 4, 5) );
+		/*data.add(new SavableStudent("Иван", "Иванов", 5, 4, 5) );
 		data.add(new SavableStudent("Петр", "Петров", 5, 3, 5) );
 		data.add(new SavableStudent("Олег", "Кузнецов", 5, 5, 4) );
 		data.add(new SavableStudent("Сергей", "Сергеев", 5, 3, 2) );*/

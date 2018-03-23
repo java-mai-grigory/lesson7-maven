@@ -13,8 +13,7 @@ public class PostgresqlStorage extends Storage{
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-		
+				
 	}
 
 	@Override

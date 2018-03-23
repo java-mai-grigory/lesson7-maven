@@ -6,7 +6,7 @@ import mai.lesson7.entity.SavableStudent;
 
 public abstract class Storage implements ISerializable{
 	
-	private ArrayList<SavableStudent> data = new ArrayList<>();
+	private  final ArrayList<SavableStudent> data;
 
 	public Storage(ArrayList<SavableStudent> data) {
 		super();
@@ -18,8 +18,6 @@ public abstract class Storage implements ISerializable{
 	}
 
 	
-	public void setList(ArrayList<SavableStudent> data) {
-		this.data = data;
-	}
+	
 	
 }
