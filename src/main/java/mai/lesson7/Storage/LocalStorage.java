@@ -10,6 +10,7 @@ import mai.lesson7.settings.Settings;
 public class LocalStorage extends Storage {
 
 	public LocalStorage(ArrayList<SavableStudent> data) {
+		
 		super(data);
 	}
 

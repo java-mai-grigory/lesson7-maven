@@ -32,6 +32,10 @@ public class StudentTableModel extends AbstractTableModel{
 		data.add(stud);
 		stud.setState(State.Added);
 	}
+	
+	public void remove(int index) {
+	    data.remove(index); 
+	}
 
 	@Override
 	public int getColumnCount() {

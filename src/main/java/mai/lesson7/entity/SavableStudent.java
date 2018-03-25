@@ -27,13 +27,24 @@ public class SavableStudent extends Student implements Serializable{
 		state = State.None;
 	}
 
-	public State getState() {
+    public SavableStudent(int id, String fname, String sname, int i, int j, int k) {
+        super(fname, sname, i, j, k);
+        RowId = id;
+        state = State.None;
+    }
+
+
+    public State getState() {
 		return state;
 	}
 
 	public void setState(State state) {
 		this.state = state;
 	}
+
+    public void setAdded() {
+        this.state = State.Added;
+    }
 
 	public int getRowId() {
 		return RowId;

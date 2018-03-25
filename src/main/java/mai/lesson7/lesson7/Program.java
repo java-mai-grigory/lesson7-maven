@@ -20,6 +20,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 import mai.lesson7.Storage.LocalStorage;
+import mai.lesson7.Storage.PostgresqlStorage;
 import mai.lesson7.entity.SavableStudent;
 import mai.lesson7.settings.Settings;
 
@@ -33,8 +34,12 @@ public class Program extends JFrame implements TableModelListener{
 	private JButton buttonSave = new JButton("Сохранить");
     private JButton buttonSerialize = new JButton("Сериализовать");
     private JButton buttonDeserialize = new JButton("Восстановить");
+    private JButton buttonDatabaseLoad = new JButton("Открыть из БД");
+    private JButton buttonDatabaseSave = new JButton("Сохранить в БД");
 	private JButton buttonAdd = new JButton("Добавить");
 	private JButton buttonRemove = new JButton("Удалить");
+	private JComboBox combo = new JComboBox();
+	
 	
 	private ArrayList<SavableStudent> data = new ArrayList<>(); 
 
@@ -63,6 +68,7 @@ public class Program extends JFrame implements TableModelListener{
 		submenu.add(i4); submenu.add(i5);  
 		menu.add(submenu);  
 		menubar.add(menu);  
+		combo.setBounds(0, 0, 100, 40);
 
 		loadTestData();
 		model = new StudentTableModel(data);
@@ -81,10 +87,13 @@ public class Program extends JFrame implements TableModelListener{
 		tool.add(buttonSave);
         tool.add(buttonDeserialize);
         tool.add(buttonSerialize);
+        tool.add(buttonDatabaseLoad);
+        tool.add(buttonDatabaseSave);
 		tool.addSeparator();
 		tool.add(buttonAdd);
 		tool.add(buttonRemove);
-		
+		tool.add(combo);
+		tool.addSeparator();
 	/*	buttonAdd.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				model.add();
@@ -121,7 +130,30 @@ public class Program extends JFrame implements TableModelListener{
             }
         });
 
+        buttonDatabaseLoad.addActionListener(e -> {
+            PostgresqlStorage storage = new PostgresqlStorage(model.getData());
+            storage.init();
+            storage.load();
+			table.updateUI();
+            storage.close();
+        });
 
+		buttonDatabaseSave.addActionListener(e -> {
+			PostgresqlStorage storage = new PostgresqlStorage(model.getData());
+			storage.init();
+			storage.insert();
+			storage.update();
+			storage.close();
+		});
+
+		buttonRemove.addActionListener(e -> {
+			   int[] selectedRows = table.getSelectedRows();
+			   for(int i : selectedRows)
+			   	   model.remove(i);
+			   table.updateUI();
+		});
+		
+		
         buttonSerialize.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -135,6 +167,8 @@ public class Program extends JFrame implements TableModelListener{
 				}
 			}
 		});
+        
+        
 
                 
 		buttonDeserialize.addActionListener(new ActionListener() {
@@ -204,6 +238,7 @@ public class Program extends JFrame implements TableModelListener{
 	public void tableChanged(TableModelEvent arg0) {
 		table.updateUI();
 		System.out.println("Таблица изменилась" + " " + arg0.getFirstRow() + "-" + arg0.getLastRow());
-		
+		for(int i = arg0.getFirstRow(); i <= arg0.getLastRow(); i++)
+			if ( model.getData().get(i).getRowId() > 0 ) model.getData().get(i).setState(SavableStudent.State.Modified);
 	}
 }
