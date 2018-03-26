@@ -85,9 +85,17 @@ public class PostgresqlStorage extends Storage{
 
 	@Override
 	public void remove() {
-		// TODO Auto-generated method stub
-		
-	}
+		for(Integer i: SavableStudent.getRemoved()) {
+				try (final PreparedStatement statement = this.connection.prepareStatement("delete from java_junior.student where stud_id = ?")) {
+					statement.setInt(1, i);
+					statement.executeUpdate();
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				throw new IllegalStateException("Не могу удалить запись");
+			}
+		}
 
 	@Override
 	public void load() {

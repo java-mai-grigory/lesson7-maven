@@ -33,8 +33,9 @@ public class StudentTableModel extends AbstractTableModel{
 		stud.setState(State.Added);
 	}
 	
-	public void remove(int index) {
-	    data.remove(index); 
+	public void remove(int index, int id) {
+	    data.remove(index);
+	    SavableStudent.add_removed(id);
 	}
 
 	@Override

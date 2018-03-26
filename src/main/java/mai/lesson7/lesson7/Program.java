@@ -143,13 +143,14 @@ public class Program extends JFrame implements TableModelListener{
 			storage.init();
 			storage.insert();
 			storage.update();
+			storage.remove();
 			storage.close();
 		});
 
 		buttonRemove.addActionListener(e -> {
 			   int[] selectedRows = table.getSelectedRows();
 			   for(int i : selectedRows)
-			   	   model.remove(i);
+			   	   model.remove( i, model.getData().get(i).getRowId());
 			   table.updateUI();
 		});
 		

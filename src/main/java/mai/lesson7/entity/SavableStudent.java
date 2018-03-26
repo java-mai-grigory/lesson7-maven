@@ -1,12 +1,31 @@
 package mai.lesson7.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class SavableStudent extends Student implements Serializable{
 
 	public enum State {Added, Deleted, Modified, None}
 	
 	private State state;
+
+	static private ArrayList<Integer> removed = new ArrayList<>();
+
+	static public void add_removed(int index)
+	{
+		removed.add(index);
+	}
+
+	static public void clear_removed()
+	{
+		removed.clear();
+	}
+
+	static public ArrayList<Integer> getRemoved()
+	{
+		return removed;
+	}
+
 	
 	private int RowId;
 
